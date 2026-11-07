@@ -305,7 +305,10 @@ dotnet publish VioletToolBox/SmartTool.csproj -c Release -r win-x64 `
 
 本补丁已提交给上游作者：
 
-> **Issue #8**：[设备信息「版本信息」中文乱码 — adb 输出未按 UTF-8 解码（附修复补丁）](https://github.com/Smart-Paocai/VioletToolBox/issues/8)
+| 类型 | 链接 | 状态 |
+|---|---|---|
+| **Issue #8** | [设备信息「版本信息」中文乱码 — adb 输出未按 UTF-8 解码（附修复补丁）](https://github.com/Smart-Paocai/VioletToolBox/issues/8) | OPEN |
+| **PR #9** | [fix: adb/fastboot 输出按 UTF-8 解码，修复设备信息中文乱码](https://github.com/Smart-Paocai/VioletToolBox/pull/9) | OPEN（1 文件，+6 / -1） |
 
 反馈内容包括：现象、复现环境、根因、完整 diff、验证结果、同类隐患提示。
 

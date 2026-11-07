@@ -143,7 +143,50 @@ else
 
 ---
 
-## 五、如何使用
+## 五、⚠️ 前置依赖（必读，实测踩坑）
+
+> **紫罗兰工具箱是框架依赖（`SelfContained=false`）程序，必须先安装 .NET 8 Desktop Runtime (x64)，否则双击无反应或直接闪退。**
+
+### 实测记录
+
+| 步骤 | 结果 |
+|---|---|
+| 只下载 `V3.7_Release.exe` 直接双击 | ❌ 无窗口 / 进程闪退 |
+| **安装 .NET 8 Desktop Runtime (x64)** | ✅ 正常运行 |
+| 安装后再次双击 | ✅ 正常打开，设备可识别 |
+
+### 需要装的运行时
+
+| 项目 | 内容 |
+|---|---|
+| 名称 | **Microsoft Windows Desktop Runtime 8.0 (x64)** |
+| 版本 | 8.0.x（实测 8.0.19 可用） |
+| 原始文件名 | `windowsdesktop-runtime-8.0.19-win-x64.exe` |
+| 大小 | 约 55.8 MB |
+| 官方下载 | <https://dotnet.microsoft.com/download/dotnet/8.0> → **Desktop Runtime** → **x64** |
+
+> 💡 网上流传的安装包常被改名为「**工具打不开安装这个.exe**」之类的名字——它**不是工具箱本体**，而是微软的 .NET 运行时安装程序。数字签名应为 `CN=.NET, O=Microsoft Corporation`。
+
+### 如何确认是否已安装
+
+```powershell
+dotnet --list-runtimes
+```
+
+输出中应包含：
+
+```
+Microsoft.WindowsDesktop.App 8.0.x   [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+Microsoft.NETCore.App 8.0.x          [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+```
+
+缺少 `Microsoft.WindowsDesktop.App 8.0.x` 就必须先安装运行时。
+
+> ⚠️ 注意：.NET 9 / 10 的运行时**不能**替代 .NET 8 运行时（框架依赖程序按主版本号匹配）。
+
+---
+
+## 六、如何使用
 
 ### 方式 A：自己打补丁编译（推荐）
 
@@ -174,14 +217,14 @@ dotnet publish VioletToolBox/SmartTool.csproj -c Release -r win-x64 `
 如果本项目 Release 中提供了构建产物：
 
 1. 解压完整目录（**不要只留 exe**，需要 `LKM_Patch`、`KernelPatch`、`exe` 等运行依赖）
-2. 确保已安装 **.NET 8 Desktop Runtime (x64)**
+2. **必须先安装 .NET 8 Desktop Runtime (x64)**（见第五节），否则双击无反应/闪退
    <https://dotnet.microsoft.com/download/dotnet/8.0>
 3. 建议把 `platform-tools\`（含 adb.exe / fastboot.exe）放到程序目录
 4. 双击 `VioletToolBox.exe`
 
 ---
 
-## 六、目录结构
+## 七、目录结构
 
 ```
 .
@@ -197,7 +240,7 @@ dotnet publish VioletToolBox/SmartTool.csproj -c Release -r win-x64 `
 
 ---
 
-## 七、给上游的建议
+## 八、给上游的建议
 
 建议向 <https://github.com/Smart-Paocai/VioletToolBox> 提交 Issue / PR：
 
@@ -207,7 +250,7 @@ dotnet publish VioletToolBox/SmartTool.csproj -c Release -r win-x64 `
 
 ---
 
-## 八、许可证
+## 九、许可证
 
 本项目遵循 **GNU General Public License v3.0**（与上游一致）。
 

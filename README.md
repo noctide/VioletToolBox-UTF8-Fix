@@ -176,11 +176,68 @@ dotnet --list-runtimes
 输出中应包含：
 
 ```
-Microsoft.WindowsDesktop.App 8.0.x   [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
 Microsoft.NETCore.App 8.0.x          [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+Microsoft.WindowsDesktop.App 8.0.x   [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
 ```
 
-缺少 `Microsoft.WindowsDesktop.App 8.0.x` 就必须先安装运行时。
+**两行都要有**（顺序无关）。缺少 `Microsoft.WindowsDesktop.App 8.0.x` 就必须先安装 Desktop Runtime。
+
+### 为什么是两行？—— 两个框架，一个安装包
+
+`Microsoft.NETCore.App` 和 `Microsoft.WindowsDesktop.App` 看起来是两个东西，但**装一个安装包就会同时得到**。
+
+依赖关系是单向的：
+
+```
+Microsoft.WindowsDesktop.App   (WPF / WinForms)
+        │ 依赖
+        ▼
+Microsoft.NETCore.App          (基础运行时 / BCL)
+        │ 依赖
+        ▼
+Microsoft.NETCore.App.Host + Host FX Resolver   (启动器)
+```
+
+装上层会自动带上底层，**反过来不行**。
+
+实测：运行 `windowsdesktop-runtime-8.0.19-win-x64.exe` 后，系统里会多出 4 个组件（注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall` 可查）：
+
+```
+Microsoft .NET Host - 8.0.19 (x64)
+Microsoft .NET Host FX Resolver - 8.0.19 (x64)
+Microsoft .NET Runtime - 8.0.19 (x64)              ← 对应 Microsoft.NETCore.App
+Microsoft Windows Desktop Runtime - 8.0.19 (x64)   ← 对应 Microsoft.WindowsDesktop.App
+```
+
+### 千万不要下错安装包
+
+| 安装包 | 装完有什么 | 能跑紫罗兰吗 |
+|---|---|---|
+| `dotnet-runtime-8.0.x-win-x64.exe` | 只有 `Microsoft.NETCore.App` | ❌ 不行 |
+| **`windowsdesktop-runtime-8.0.x-win-x64.exe`** | `Microsoft.NETCore.App` + `Microsoft.WindowsDesktop.App` | ✅ **可以** |
+| `dotnet-sdk-8.0.x-win-x64.exe` | 运行时 + 编译器（开发用，体积大） | ✅ 可以（但没必要） |
+
+**认准名字里带 `windowsdesktop-runtime` 的那个。**
+
+如果只装了基础运行时，启动时会报：
+
+```
+You must install or update .NET to run this application.
+Framework: 'Microsoft.WindowsDesktop.App', version '8.0.0'
+```
+
+### 为什么程序两个都要
+
+`VioletToolBox.runtimeconfig.json` 里声明了两个框架：
+
+```json
+"frameworks": [
+  { "name": "Microsoft.NETCore.App",        "version": "8.0.0" },
+  { "name": "Microsoft.WindowsDesktop.App", "version": "8.0.0" }
+]
+```
+
+启动时两个都会检查，缺任何一个都打不开。
 
 > ⚠️ 注意：.NET 9 / 10 的运行时**不能**替代 .NET 8 运行时（框架依赖程序按主版本号匹配）。
 

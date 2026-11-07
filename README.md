@@ -301,13 +301,27 @@ dotnet publish VioletToolBox/SmartTool.csproj -c Release -r win-x64 `
 
 ---
 
-## 八、给上游的建议
+## 八、已向作者反馈
 
-建议向 <https://github.com/Smart-Paocai/VioletToolBox> 提交 Issue / PR：
+本补丁已提交给上游作者：
+
+> **Issue #8**：[设备信息「版本信息」中文乱码 — adb 输出未按 UTF-8 解码（附修复补丁）](https://github.com/Smart-Paocai/VioletToolBox/issues/8)
+
+反馈内容包括：现象、复现环境、根因、完整 diff、验证结果、同类隐患提示。
+
+### 建议作者一并处理
 
 1. **本补丁**：`GetCommandOutput()` 显式使用 UTF-8
 2. **同类隐患**：`ConfigureHiddenRedirectedProcess()`（`MainWindow.xaml.cs:14287` 附近）在调用方未指定编码时会回退到 `CultureInfo.CurrentCulture.TextInfo.OEMCodePage`。若有 adb 调用经过该函数且输出含中文，同样会乱码。
 3. 上游 v3.7 发布版（`V3.7_Release.exe`）经实测存在此问题。
+
+### ⚠️ 另一个待处理事项：.NET 8 即将 EOL
+
+上游已有 Issue [#3](https://github.com/Smart-Paocai/VioletToolBox/issues/3) 指出：**.NET 8 于 2026-11-10 终止维护**。
+
+当前项目目标框架为 `net8.0-windows`，届时将不再获得安全更新，建议作者升级到 .NET 9 / 10（LTS）。
+
+> 在此之前，本补丁与本仓库的构建方式仍然有效。
 
 ---
 

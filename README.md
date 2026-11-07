@@ -1,7 +1,7 @@
 # VioletToolBox UTF-8 修复版（中文乱码修复）
 
 > **本项目不是原作者项目，而是对上游的 bug 修复补丁。**
-> 原作者：**Smart-Paocai** · 上游仓库：<https://github.com/Smart-Paocai/VioletToolBox>
+> 原作者：**Smart-Paocai** · 上游仓库：<https://github.com/Smart-Paocai/VioletToolBox> · 官网：<https://violettool.top/>
 
 ---
 
@@ -10,7 +10,8 @@
 ```
 原作者 Smart-Paocai
       │
-      │  https://github.com/Smart-Paocai/VioletToolBox
+      ├─ 官网：https://violettool.top/
+      ├─ 仓库：https://github.com/Smart-Paocai/VioletToolBox
       │  GPL-3.0
       ▼
 上游源码 commit 153a0d13a0ae855c3e682bf281940e691ef22f21
@@ -33,7 +34,10 @@ VioletToolBox.exe（UTF-8 修复版）
 | VioletToolBox 全部代码 | **Smart-Paocai** 及上游贡献者 |
 | 本项目新增内容 | 仅 `patch/` 中的 UTF-8 编码修复补丁 + 本文档 |
 | 许可证 | **GPL-3.0**（与上游一致，见 [LICENSE](LICENSE)） |
+| 上游仓库 | <https://github.com/Smart-Paocai/VioletToolBox> |
+| **作者官网** | **<https://violettool.top/>** |
 | 官方下载 | <https://github.com/Smart-Paocai/VioletToolBox/releases> |
+| 交流群组 | Telegram <https://t.me/violettoolbox> |
 
 ---
 
